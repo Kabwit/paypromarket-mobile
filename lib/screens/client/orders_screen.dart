@@ -5,6 +5,8 @@ import '../../models/commande.dart';
 import '../../services/api_service.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_state.dart';
+import 'laisser_avis_screen.dart';
+import '../common/signalement_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -250,6 +252,59 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         ],
                       ),
                     )),
+              ],
+
+              // Actions pour commande livrée
+              if (commande.statut == 'livree' || commande.statut == 'livrée') ...[
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => LaisserAvisScreen(
+                                commandeId: commande.id!,
+                                vendeurId: commande.vendeur?['id'] ?? 0,
+                                vendeurNom: commande.vendeur?['nom_boutique'] ?? 'Vendeur',
+                              ),
+                            ),
+                          ).then((result) {
+                            if (result == true) _loadCommandes();
+                          });
+                        },
+                        icon: const Icon(Icons.star, size: 18),
+                        label: const Text('Avis', style: TextStyle(fontSize: 13)),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => SignalementScreen(
+                                typeCible: 'vendeur',
+                                cibleId: commande.vendeur?['id'] ?? 0,
+                                cibleNom: commande.vendeur?['nom_boutique'] ?? 'Vendeur',
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.flag, size: 18, color: AppTheme.errorColor),
+                        label: const Text('Signaler', style: TextStyle(fontSize: 13, color: AppTheme.errorColor)),
+                        style: OutlinedButton.styleFrom(side: const BorderSide(color: AppTheme.errorColor)),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ],
           ),

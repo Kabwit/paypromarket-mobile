@@ -6,6 +6,7 @@ class Produit {
   final double prix;
   final double? prixPromo;
   final int stock;
+  final int? stockMinimum;
   final String? categorie;
   final String? sousCategorie;
   final List<String> photos;
@@ -15,6 +16,8 @@ class Produit {
   final String? delaiPreparation;
   final int? vendeurId;
   final Map<String, dynamic>? vendeur;
+  final double? noteMoyenne;
+  final int? nombreAvis;
   final String? createdAt;
 
   Produit({
@@ -25,6 +28,7 @@ class Produit {
     required this.prix,
     this.prixPromo,
     required this.stock,
+    this.stockMinimum,
     this.categorie,
     this.sousCategorie,
     this.photos = const [],
@@ -34,6 +38,8 @@ class Produit {
     this.delaiPreparation,
     this.vendeurId,
     this.vendeur,
+    this.noteMoyenne,
+    this.nombreAvis,
     this.createdAt,
   });
 
@@ -55,6 +61,7 @@ class Produit {
       prix: (json['prix'] ?? 0).toDouble(),
       prixPromo: json['prix_promo'] != null ? (json['prix_promo']).toDouble() : null,
       stock: json['stock'] ?? 0,
+      stockMinimum: json['stock_minimum'],
       categorie: json['categorie'],
       sousCategorie: json['sous_categorie'],
       photos: photosList,
@@ -64,6 +71,8 @@ class Produit {
       delaiPreparation: json['delai_preparation'],
       vendeurId: json['vendeur_id'],
       vendeur: json['vendeur'] is Map<String, dynamic> ? json['vendeur'] : null,
+      noteMoyenne: json['note_moyenne'] != null ? double.tryParse(json['note_moyenne'].toString()) : null,
+      nombreAvis: json['nombre_avis'],
       createdAt: json['createdAt'],
     );
   }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,10 +40,8 @@ class ApiService {
         headers: _headers,
       );
       return _handleResponse(response);
-    } on SocketException {
-      return {'success': false, 'error': 'Pas de connexion internet'};
     } catch (e) {
-      return {'success': false, 'error': e.toString()};
+      return {'success': false, 'error': _formatError(e)};
     }
   }
 
@@ -57,10 +54,8 @@ class ApiService {
         body: jsonEncode(body),
       );
       return _handleResponse(response);
-    } on SocketException {
-      return {'success': false, 'error': 'Pas de connexion internet'};
     } catch (e) {
-      return {'success': false, 'error': e.toString()};
+      return {'success': false, 'error': _formatError(e)};
     }
   }
 
@@ -73,10 +68,8 @@ class ApiService {
         body: jsonEncode(body),
       );
       return _handleResponse(response);
-    } on SocketException {
-      return {'success': false, 'error': 'Pas de connexion internet'};
     } catch (e) {
-      return {'success': false, 'error': e.toString()};
+      return {'success': false, 'error': _formatError(e)};
     }
   }
 
@@ -88,18 +81,17 @@ class ApiService {
         headers: _headers,
       );
       return _handleResponse(response);
-    } on SocketException {
-      return {'success': false, 'error': 'Pas de connexion internet'};
     } catch (e) {
-      return {'success': false, 'error': e.toString()};
+      return {'success': false, 'error': _formatError(e)};
     }
   }
 
-  // Multipart POST (pour upload de fichiers)
-  static Future<Map<String, dynamic>> uploadFile(
+  // Upload fichier(s) avec bytes (compatible web + mobile)
+  static Future<Map<String, dynamic>> uploadFileBytes(
     String url,
     String fieldName,
-    File file, {
+    List<int> bytes,
+    String filename, {
     Map<String, String>? fields,
   }) async {
     try {
@@ -107,25 +99,27 @@ class ApiService {
       if (_token != null) {
         request.headers['Authorization'] = 'Bearer $_token';
       }
-      request.files.add(await http.MultipartFile.fromPath(fieldName, file.path));
+      request.files.add(http.MultipartFile.fromBytes(
+        fieldName,
+        bytes,
+        filename: filename,
+      ));
       if (fields != null) {
         request.fields.addAll(fields);
       }
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
       return _handleResponse(response);
-    } on SocketException {
-      return {'success': false, 'error': 'Pas de connexion internet'};
     } catch (e) {
-      return {'success': false, 'error': e.toString()};
+      return {'success': false, 'error': _formatError(e)};
     }
   }
 
-  // Multipart POST avec plusieurs fichiers
-  static Future<Map<String, dynamic>> uploadMultipleFiles(
+  // Upload multiple fichiers avec bytes
+  static Future<Map<String, dynamic>> uploadMultipleFileBytes(
     String url,
     String fieldName,
-    List<File> files, {
+    List<Map<String, dynamic>> filesData, {
     Map<String, String>? fields,
   }) async {
     try {
@@ -133,8 +127,12 @@ class ApiService {
       if (_token != null) {
         request.headers['Authorization'] = 'Bearer $_token';
       }
-      for (var file in files) {
-        request.files.add(await http.MultipartFile.fromPath(fieldName, file.path));
+      for (var fileData in filesData) {
+        request.files.add(http.MultipartFile.fromBytes(
+          fieldName,
+          fileData['bytes'] as List<int>,
+          filename: fileData['filename'] as String,
+        ));
       }
       if (fields != null) {
         request.fields.addAll(fields);
@@ -142,11 +140,47 @@ class ApiService {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
       return _handleResponse(response);
-    } on SocketException {
-      return {'success': false, 'error': 'Pas de connexion internet'};
     } catch (e) {
-      return {'success': false, 'error': e.toString()};
+      return {'success': false, 'error': _formatError(e)};
     }
+  }
+
+  // Upload fichiers avec champs distincts (ex: document + selfie)
+  static Future<Map<String, dynamic>> uploadNamedFiles(
+    String url,
+    Map<String, List<int>> fileBytes,
+    Map<String, String> fileNames, {
+    Map<String, String>? fields,
+  }) async {
+    try {
+      final request = http.MultipartRequest('POST', Uri.parse(url));
+      if (_token != null) {
+        request.headers['Authorization'] = 'Bearer $_token';
+      }
+      for (var entry in fileBytes.entries) {
+        request.files.add(http.MultipartFile.fromBytes(
+          entry.key,
+          entry.value,
+          filename: fileNames[entry.key] ?? 'file',
+        ));
+      }
+      if (fields != null) {
+        request.fields.addAll(fields);
+      }
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+      return _handleResponse(response);
+    } catch (e) {
+      return {'success': false, 'error': _formatError(e)};
+    }
+  }
+
+  static String _formatError(dynamic e) {
+    final msg = e.toString().toLowerCase();
+    if (msg.contains('socketexception') || msg.contains('failed host lookup') || msg.contains('connection refused') || msg.contains('xmlhttprequest')) {
+      return 'Pas de connexion au serveur';
+    }
+    return e.toString();
   }
 
   static Map<String, dynamic> _handleResponse(http.Response response) {

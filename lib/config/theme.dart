@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Couleurs PayPro Market RDC
-  static const Color primaryColor = Color(0xFF1B5E20); // Vert foncé
-  static const Color primaryLight = Color(0xFF4CAF50); // Vert clair
+  // Couleurs PayPro Market RDC — Bleu-gris sobre
+  static const Color primaryColor = Color(0xFF37474F); // Bleu-gris foncé
+  static const Color primaryLight = Color(0xFF546E7A); // Bleu-gris clair
+  static const Color primaryDark = Color(0xFF263238); // Bleu-gris très foncé
   static const Color accentColor = Color(0xFFFF9800); // Orange
   static const Color backgroundColor = Color(0xFFF5F5F5);
   static const Color surfaceColor = Colors.white;
   static const Color errorColor = Color(0xFFD32F2F);
   static const Color successColor = Color(0xFF388E3C);
+  static const Color warningColor = Color(0xFFF57F17);
+  static const Color infoColor = Color(0xFF1565C0);
   static const Color textPrimary = Color(0xFF212121);
   static const Color textSecondary = Color(0xFF757575);
   static const Color dividerColor = Color(0xFFE0E0E0);
+  static const Color verifiedBadge = Color(0xFF37474F);
+  static const Color premiumGold = Color(0xFFFFD700);
 
   static ThemeData get lightTheme {
     return ThemeData(

@@ -1,8 +1,9 @@
 class ApiConfig {
-  // Pour Android Emulator, utiliser 10.0.2.2 au lieu de localhost
-  // Pour iOS Simulator, utiliser localhost
-  // Pour appareil physique, utiliser l'IP de votre machine
-  static const String baseUrl = 'http://10.0.2.2:5000';
+  // Changez cette IP par celle de votre machine (ipconfig)
+  // Pour web/iPhone sur le même Wi-Fi, utiliser l'IP locale
+  // Pour Android Emulator, utiliser 10.0.2.2
+  // Changez avec votre IP locale (ipconfig) ou 10.0.2.2 pour émulateur Android
+  static const String baseUrl = 'http://10.242.164.149:5000';
   static const String apiUrl = '$baseUrl/api';
 
   // Auth
@@ -59,6 +60,26 @@ class ApiConfig {
   static const String lireToutNotifications = '$apiUrl/notifications/lire-tout';
   static String lireNotification(int id) => '$apiUrl/notifications/$id/lire';
   static String supprimerNotification(int id) => '$apiUrl/notifications/$id';
+
+  // Vérifications vendeur
+  static const String verifications = '$apiUrl/verifications';
+  static const String mesVerifications = '$apiUrl/verifications/mes-verifications';
+
+  // Avis & Notation
+  static const String avis = '$apiUrl/avis';
+  static String avisVendeur(int vendeurId) => '$apiUrl/avis/vendeur/$vendeurId';
+  static const String mesAvis = '$apiUrl/avis/mes-avis';
+  static String repondreAvis(int id) => '$apiUrl/avis/$id/repondre';
+
+  // Signalements
+  static const String signalements = '$apiUrl/signalements';
+  static const String mesSignalements = '$apiUrl/signalements/mes-signalements';
+
+  // Premium
+  static const String monPlan = '$apiUrl/premium/mon-plan';
+  static const String souscrirePlan = '$apiUrl/premium/souscrire';
+  static const String annulerPlan = '$apiUrl/premium/annuler';
+  static const String stocksBas = '$apiUrl/premium/stocks-bas';
 
   // Uploads
   static String uploadUrl(String path) => '$baseUrl/$path';

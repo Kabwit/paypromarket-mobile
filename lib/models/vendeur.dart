@@ -11,6 +11,16 @@ class Vendeur {
   final String? logoBoutique;
   final String? categoriePrincipale;
   final bool? estActif;
+  final bool? verifie;
+  final String? dateVerification;
+  final double? scoreFiabilite;
+  final double? noteMoyenne;
+  final int? nombreAvis;
+  final int? nombreVentes;
+  final bool? premium;
+  final String? plan;
+  final String? dateExpirationPremium;
+  final int? limiteProduits;
   final String? createdAt;
 
   Vendeur({
@@ -26,6 +36,16 @@ class Vendeur {
     this.logoBoutique,
     this.categoriePrincipale,
     this.estActif,
+    this.verifie,
+    this.dateVerification,
+    this.scoreFiabilite,
+    this.noteMoyenne,
+    this.nombreAvis,
+    this.nombreVentes,
+    this.premium,
+    this.plan,
+    this.dateExpirationPremium,
+    this.limiteProduits,
     this.createdAt,
   });
 
@@ -43,6 +63,16 @@ class Vendeur {
       logoBoutique: json['logo_boutique'],
       categoriePrincipale: json['categorie_principale'],
       estActif: json['est_actif'],
+      verifie: json['verifie'],
+      dateVerification: json['date_verification'],
+      scoreFiabilite: json['score_fiabilite'] != null ? double.tryParse(json['score_fiabilite'].toString()) : null,
+      noteMoyenne: json['note_moyenne'] != null ? double.tryParse(json['note_moyenne'].toString()) : null,
+      nombreAvis: json['nombre_avis'],
+      nombreVentes: json['nombre_ventes'],
+      premium: json['premium'],
+      plan: json['plan'],
+      dateExpirationPremium: json['date_expiration_premium'],
+      limiteProduits: json['limite_produits'],
       createdAt: json['createdAt'],
     );
   }

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../config/api_config.dart';
@@ -28,7 +28,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _delaiController = TextEditingController();
 
   String? _categorie;
-  List<File> _selectedImages = [];
+  List<XFile> _selectedImages = [];
   bool _isLoading = false;
 
   final List<String> _categories = [
@@ -78,7 +78,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     final images = await picker.pickMultiImage(limit: 5);
     if (images.isNotEmpty) {
       setState(() {
-        _selectedImages = images.map((x) => File(x.path)).toList();
+        _selectedImages = images;
       });
     }
   }
@@ -103,22 +103,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
     Map<String, dynamic> result;
 
     if (_selectedImages.isNotEmpty) {
-      // Avec images
-      if (isEditing) {
-        result = await ApiService.uploadMultipleFiles(
-          ApiConfig.produitById(widget.produit!.id!),
-          'photos',
-          _selectedImages,
-          fields: fields,
-        );
-      } else {
-        result = await ApiService.uploadMultipleFiles(
-          ApiConfig.produits,
-          'photos',
-          _selectedImages,
-          fields: fields,
-        );
+      // Convertir XFile en bytes pour upload compatible web + mobile
+      final filesData = <Map<String, dynamic>>[];
+      for (final xfile in _selectedImages) {
+        final bytes = await xfile.readAsBytes();
+        filesData.add({'bytes': bytes, 'filename': xfile.name});
       }
+      final url = isEditing
+          ? ApiConfig.produitById(widget.produit!.id!)
+          : ApiConfig.produits;
+      result = await ApiService.uploadMultipleFileBytes(
+        url,
+        'photos',
+        filesData,
+        fields: fields,
+      );
     } else {
       // Sans images
       final bodyMap = fields.map((k, v) => MapEntry(k, v as dynamic));
@@ -193,11 +192,22 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               padding: const EdgeInsets.only(right: 8),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  _selectedImages[i],
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
+                                child: FutureBuilder<Uint8List>(
+                                  future: _selectedImages[i].readAsBytes(),
+                                  builder: (ctx, snap) {
+                                    if (snap.hasData) {
+                                      return Image.memory(
+                                        snap.data!,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      );
+                                    }
+                                    return const SizedBox(
+                                      width: 100, height: 100,
+                                      child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                                    );
+                                  },
                                 ),
                               ),
                             ),

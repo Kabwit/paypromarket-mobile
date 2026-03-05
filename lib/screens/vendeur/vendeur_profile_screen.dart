@@ -76,6 +76,25 @@ class _VendeurProfileScreenState extends State<VendeurProfileScreen> {
                         '@${_profil!['slug_boutique']}',
                         style: const TextStyle(color: AppTheme.textSecondary),
                       ),
+                    const SizedBox(height: 10),
+                    // Badges
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        if (_profil?['verifie'] == true)
+                          _profileBadge(Icons.verified, 'Vérifié', AppTheme.primaryColor)
+                        else
+                          _profileBadge(Icons.error_outline, 'Non vérifié', AppTheme.accentColor),
+                        if (_profil?['premium'] == true)
+                          _profileBadge(Icons.workspace_premium, _profil?['plan'] ?? 'Premium', AppTheme.premiumGold),
+                        if (_profil?['note_moyenne'] != null)
+                          _profileBadge(Icons.star, '${double.tryParse(_profil!['note_moyenne'].toString())?.toStringAsFixed(1)}/5 (${_profil?['nombre_avis'] ?? 0})', AppTheme.warningColor),
+                        if (_profil?['score_fiabilite'] != null)
+                          _profileBadge(Icons.shield, 'Score: ${double.tryParse(_profil!['score_fiabilite'].toString())?.round()}%', AppTheme.infoColor),
+                      ],
+                    ),
                     const SizedBox(height: 24),
 
                     // Informations
@@ -204,6 +223,24 @@ class _VendeurProfileScreenState extends State<VendeurProfileScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _profileBadge(IconData icon, String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: color),
+          const SizedBox(width: 4),
+          Text(label, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+        ],
       ),
     );
   }

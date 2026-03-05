@@ -6,6 +6,9 @@ import '../../widgets/loading_widget.dart';
 import 'vendeur_products_screen.dart';
 import 'vendeur_orders_screen.dart';
 import 'vendeur_profile_screen.dart';
+import 'avis_vendeur_screen.dart';
+import 'verification_screen.dart';
+import 'premium_screen.dart';
 
 class VendeurHomeScreen extends StatefulWidget {
   const VendeurHomeScreen({super.key});
@@ -112,14 +115,46 @@ class _DashboardTabState extends State<_DashboardTab> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            '👋 Bienvenue !',
-                            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      '👋 Bienvenue !',
+                                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      _dashboard?['vendeur']?['nom_boutique'] ?? 'Votre boutique',
+                                      style: const TextStyle(color: Colors.white70, fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _dashboard?['vendeur']?['nom_boutique'] ?? 'Votre boutique',
-                            style: const TextStyle(color: Colors.white70, fontSize: 14),
+                          const SizedBox(height: 10),
+                          // Badges vendeur
+                          Wrap(
+                            spacing: 6,
+                            runSpacing: 6,
+                            children: [
+                              if (_dashboard?['vendeur']?['verifie'] == true)
+                                _badge(Icons.verified, 'Vérifié', AppTheme.primaryColor)
+                              else
+                                GestureDetector(
+                                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const VerificationScreen())),
+                                  child: _badge(Icons.error_outline, 'Non vérifié', AppTheme.accentColor),
+                                ),
+                              if (_dashboard?['vendeur']?['premium'] == true)
+                                _badge(Icons.workspace_premium, _dashboard?['vendeur']?['plan'] ?? 'Premium', AppTheme.premiumGold),
+                              if (_dashboard?['vendeur']?['score_fiabilite'] != null)
+                                _badge(Icons.shield, 'Score: ${double.tryParse(_dashboard!['vendeur']['score_fiabilite'].toString())?.round() ?? 0}%', AppTheme.infoColor),
+                              if (_dashboard?['vendeur']?['note_moyenne'] != null)
+                                _badge(Icons.star, '${double.tryParse(_dashboard!['vendeur']['note_moyenne'].toString())?.toStringAsFixed(1)}/5', AppTheme.warningColor),
+                            ],
                           ),
                         ],
                       ),
@@ -175,7 +210,6 @@ class _DashboardTabState extends State<_DashboardTab> {
                       'Publier un nouveau produit',
                       Colors.blue,
                       () {
-                        // Aller à l'onglet produits
                         final homeState = context.findAncestorStateOfType<_VendeurHomeScreenState>();
                         homeState?.setState(() => homeState._currentIndex = 1);
                       },
@@ -191,17 +225,47 @@ class _DashboardTabState extends State<_DashboardTab> {
                       },
                     ),
                     _actionTile(
-                      Icons.bar_chart,
-                      'Statistiques détaillées',
-                      'Voir vos statistiques complètes',
+                      Icons.star,
+                      'Avis clients',
+                      'Voir et répondre aux avis',
+                      AppTheme.warningColor,
+                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AvisVendeurScreen())),
+                    ),
+                    _actionTile(
+                      Icons.verified_user,
+                      'Vérification',
+                      'Soumettre vos documents',
                       AppTheme.primaryColor,
-                      () {
-                        // TODO: stats page
-                      },
+                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const VerificationScreen())),
+                    ),
+                    _actionTile(
+                      Icons.workspace_premium,
+                      'Mon Plan',
+                      'Gérer votre abonnement',
+                      AppTheme.accentColor,
+                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen())),
                     ),
                   ],
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _badge(IconData icon, String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: Colors.white),
+          const SizedBox(width: 4),
+          Text(label, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
+        ],
       ),
     );
   }
