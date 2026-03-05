@@ -7,6 +7,7 @@ import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_state.dart';
 import 'laisser_avis_screen.dart';
 import '../common/signalement_screen.dart';
+import '../common/suivi_livraison_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -235,6 +236,27 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 _infoRow('Adresse', commande.adresseLivraison!),
               if (commande.telephoneContact != null)
                 _infoRow('Téléphone', commande.telephoneContact!),
+
+              // Bouton suivi de livraison
+              if (commande.statut != 'annulee' && commande.statut != 'annulée') ...[
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SuiviLivraisonScreen(commandeId: commande.id!),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.local_shipping, size: 18),
+                    label: const Text('Suivre la livraison'),
+                  ),
+                ),
+              ],
 
               if (commande.lignes != null && commande.lignes!.isNotEmpty) ...[
                 const SizedBox(height: 16),

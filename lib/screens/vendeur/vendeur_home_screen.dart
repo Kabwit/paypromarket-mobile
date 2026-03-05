@@ -9,6 +9,9 @@ import 'vendeur_profile_screen.dart';
 import 'avis_vendeur_screen.dart';
 import 'verification_screen.dart';
 import 'premium_screen.dart';
+import 'stats_screen.dart';
+import '../common/notifications_screen.dart';
+import '../common/conversations_screen.dart';
 
 class VendeurHomeScreen extends StatefulWidget {
   const VendeurHomeScreen({super.key});
@@ -85,9 +88,19 @@ class _DashboardTabState extends State<_DashboardTab> {
         title: const Text('Tableau de bord'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.chat_outlined),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (_) => const ConversationsScreen(),
+              ));
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
-              // TODO: notifications
+              Navigator.push(context, MaterialPageRoute(
+                builder: (_) => const NotificationsScreen(),
+              ));
             },
           ),
         ],
@@ -244,6 +257,13 @@ class _DashboardTabState extends State<_DashboardTab> {
                       'Gérer votre abonnement',
                       AppTheme.accentColor,
                       () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen())),
+                    ),
+                    _actionTile(
+                      Icons.bar_chart,
+                      'Statistiques',
+                      'Graphiques et analyses',
+                      Colors.teal,
+                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StatsScreen())),
                     ),
                   ],
                 ),

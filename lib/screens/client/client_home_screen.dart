@@ -13,6 +13,8 @@ import 'product_detail_screen.dart';
 import 'cart_screen.dart';
 import 'orders_screen.dart';
 import 'client_profile_screen.dart';
+import '../common/notifications_screen.dart';
+import '../common/conversations_screen.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({super.key});
@@ -140,9 +142,19 @@ class _HomeTabState extends State<_HomeTab> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.chat_outlined),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (_) => const ConversationsScreen(),
+              ));
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
-              // TODO: notifications
+              Navigator.push(context, MaterialPageRoute(
+                builder: (_) => const NotificationsScreen(),
+              ));
             },
           ),
         ],

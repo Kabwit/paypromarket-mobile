@@ -6,6 +6,8 @@ import '../../providers/auth_provider.dart';
 import '../../services/api_service.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/custom_text_field.dart';
+import '../common/language_screen.dart';
+import '../common/about_screen.dart';
 
 class VendeurProfileScreen extends StatefulWidget {
   const VendeurProfileScreen({super.key});
@@ -132,6 +134,28 @@ class _VendeurProfileScreenState extends State<VendeurProfileScreen> {
                         ),
                       ),
                     const SizedBox(height: 24),
+
+                    // Paramètres
+                    Card(
+                      margin: EdgeInsets.zero,
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.language, color: AppTheme.primaryColor),
+                            title: const Text('Langue'),
+                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageScreen())),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.info_outline, color: AppTheme.primaryColor),
+                            title: const Text('À propos'),
+                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutScreen())),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
 
                     // Déconnexion
                     SizedBox(

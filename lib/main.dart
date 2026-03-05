@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'config/theme.dart';
+import 'l10n/app_localizations.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
 import 'screens/splash_screen.dart';
@@ -26,6 +28,14 @@ class PayProMarketApp extends StatelessWidget {
         title: 'PayPro Market RDC',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
+        locale: const Locale('fr'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         home: const AppRoot(),
       ),
     );

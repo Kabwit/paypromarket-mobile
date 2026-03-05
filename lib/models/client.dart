@@ -20,9 +20,16 @@ class Client {
   });
 
   factory Client.fromJson(Map<String, dynamic> json) {
+    // Backend envoie 'nom' + 'prenom' séparément
+    String fullName = json['nom_complet'] ?? '';
+    if (fullName.isEmpty) {
+      final nom = json['nom'] ?? '';
+      final prenom = json['prenom'] ?? '';
+      fullName = '$nom $prenom'.trim();
+    }
     return Client(
       id: json['id'],
-      nomComplet: json['nom_complet'] ?? '',
+      nomComplet: fullName,
       telephone: json['telephone'] ?? '',
       email: json['email'],
       adresse: json['adresse'],
@@ -33,8 +40,9 @@ class Client {
   }
 
   Map<String, dynamic> toJson() {
+    // Backend attend 'nom' (pas 'nom_complet')
     return {
-      'nom_complet': nomComplet,
+      'nom': nomComplet,
       'telephone': telephone,
       'email': email,
       'adresse': adresse,

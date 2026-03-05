@@ -5,6 +5,8 @@ import '../../config/api_config.dart';
 import '../../config/theme.dart';
 import '../../models/produit.dart';
 import '../../providers/cart_provider.dart';
+import '../../services/api_service.dart';
+import '../common/chat_detail_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Produit produit;
@@ -316,6 +318,43 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       icon: Icon(inCart ? Icons.check : Icons.add_shopping_cart),
                       label: Text(inCart ? 'Déjà dans le panier' : 'Ajouter au panier'),
                     ),
+                    if (produit.vendeurId != null) ...[  
+                      const SizedBox(width: 8),
+                      IconButton(
+                        onPressed: () async {
+                          try {
+                            final data = await ApiService.post(ApiConfig.chatDemarrer, {
+                              'vendeur_id': produit.vendeurId,
+                              'message': 'Bonjour, je suis intéressé(e) par ${produit.nom}',
+                              'produit_id': produit.id,
+                            });
+                            if (context.mounted) {
+                              final convId = data['conversation_id'] ?? '';
+                              final vendeurNom = produit.vendeur?['nom_boutique'] ?? 'Vendeur';
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (_) => ChatDetailScreen(
+                                  conversationId: convId,
+                                  interlocuteurNom: vendeurNom,
+                                  interlocuteurType: 'vendeur',
+                                  interlocuteurId: produit.vendeurId,
+                                ),
+                              ));
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Erreur: $e'), backgroundColor: Colors.red),
+                              );
+                            }
+                          }
+                        },
+                        icon: const Icon(Icons.chat, color: AppTheme.primaryColor),
+                        tooltip: 'Contacter le vendeur',
+                        style: IconButton.styleFrom(
+                          backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),

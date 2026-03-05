@@ -43,6 +43,18 @@ class Produit {
     this.createdAt,
   });
 
+  static double? _computePromoPrice(Map<String, dynamic> json) {
+    // Si prix_promo est directement fourni
+    if (json['prix_promo'] != null) return (json['prix_promo']).toDouble();
+    // Sinon, calculer à partir de promotion + pourcentage_promotion
+    if (json['promotion'] == true && json['pourcentage_promotion'] != null) {
+      final prixBase = (json['prix_cdf'] ?? json['prix'] ?? 0).toDouble();
+      final pct = (json['pourcentage_promotion'] as num).toDouble();
+      if (pct > 0 && pct <= 100) return prixBase * (1 - pct / 100);
+    }
+    return null;
+  }
+
   factory Produit.fromJson(Map<String, dynamic> json) {
     List<String> photosList = [];
     if (json['photos'] != null) {
@@ -58,8 +70,8 @@ class Produit {
       nom: json['nom'] ?? '',
       slug: json['slug'],
       description: json['description'],
-      prix: (json['prix'] ?? 0).toDouble(),
-      prixPromo: json['prix_promo'] != null ? (json['prix_promo']).toDouble() : null,
+      prix: (json['prix_cdf'] ?? json['prix'] ?? 0).toDouble(),
+      prixPromo: _computePromoPrice(json),
       stock: json['stock'] ?? 0,
       stockMinimum: json['stock_minimum'],
       categorie: json['categorie'],
@@ -67,7 +79,7 @@ class Produit {
       photos: photosList,
       lienUnique: json['lien_unique'],
       unite: json['unite'],
-      estActif: json['est_actif'],
+      estActif: json['est_actif'] ?? json['disponible'],
       delaiPreparation: json['delai_preparation'],
       vendeurId: json['vendeur_id'],
       vendeur: json['vendeur'] is Map<String, dynamic> ? json['vendeur'] : null,

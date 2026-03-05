@@ -81,6 +81,12 @@ class ApiConfig {
   static const String annulerPlan = '$apiUrl/premium/annuler';
   static const String stocksBas = '$apiUrl/premium/stocks-bas';
 
+  // Chat / Messagerie
+  static const String chatConversations = '$apiUrl/chat/conversations';
+  static String chatMessages(String conversationId) => '$apiUrl/chat/conversations/$conversationId';
+  static const String chatEnvoyer = '$apiUrl/chat/envoyer';
+  static const String chatDemarrer = '$apiUrl/chat/demarrer';
+
   // Uploads
   static String uploadUrl(String path) => '$baseUrl/$path';
 }

@@ -58,7 +58,7 @@ class AuthProvider extends ChangeNotifier {
       if (email != null) 'email': email,
       if (ville != null) 'ville': ville,
       if (province != null) 'province': province,
-      if (categoriePrincipale != null) 'categorie_principale': categoriePrincipale,
+      if (categoriePrincipale != null) 'categorie_boutique': categoriePrincipale,
     });
 
     _isLoading = false;
@@ -114,7 +114,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     final result = await ApiService.post(ApiConfig.clientInscription, {
-      'nom_complet': nomComplet,
+      'nom': nomComplet,
       'telephone': telephone,
       'mot_de_passe': motDePasse,
       if (email != null) 'email': email,

@@ -91,10 +91,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
     final fields = {
       'nom': _nomController.text.trim(),
       'description': _descriptionController.text.trim(),
-      'prix': _prixController.text.trim(),
+      'prix_cdf': _prixController.text.trim(),
       'stock': _stockController.text.trim(),
       if (_prixPromoController.text.isNotEmpty)
-        'prix_promo': _prixPromoController.text.trim(),
+        'pourcentage_promotion': _prixPromoController.text.trim(),
       if (_categorie != null) 'categorie': _categorie!,
       if (_uniteController.text.isNotEmpty) 'unite': _uniteController.text.trim(),
       if (_delaiController.text.isNotEmpty) 'delai_preparation': _delaiController.text.trim(),

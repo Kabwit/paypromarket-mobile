@@ -53,16 +53,16 @@ class Vendeur {
     return Vendeur(
       id: json['id'],
       nomBoutique: json['nom_boutique'] ?? '',
-      slugBoutique: json['slug_boutique'],
+      slugBoutique: json['slug_boutique'] ?? json['slug'],
       description: json['description'],
       telephone: json['telephone'] ?? '',
       email: json['email'],
       adresse: json['adresse'],
       ville: json['ville'],
       province: json['province'],
-      logoBoutique: json['logo_boutique'],
-      categoriePrincipale: json['categorie_principale'],
-      estActif: json['est_actif'],
+      logoBoutique: json['logo_boutique'] ?? json['logo'],
+      categoriePrincipale: json['categorie_principale'] ?? json['categorie_boutique'],
+      estActif: json['est_actif'] ?? json['actif'],
       verifie: json['verifie'],
       dateVerification: json['date_verification'],
       scoreFiabilite: json['score_fiabilite'] != null ? double.tryParse(json['score_fiabilite'].toString()) : null,
@@ -86,7 +86,7 @@ class Vendeur {
       'adresse': adresse,
       'ville': ville,
       'province': province,
-      'categorie_principale': categoriePrincipale,
+      'categorie_boutique': categoriePrincipale,
     };
   }
 }
