@@ -179,51 +179,116 @@ class _HomeTabState extends State<_HomeTab> {
                       )
                     : CustomScrollView(
                         slivers: [
-                          // Bannière
+                        // 🎨 Bannière premium d'accueil
                           SliverToBoxAdapter(
                             child: Container(
                               margin: const EdgeInsets.all(16),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [AppTheme.primaryColor, AppTheme.primaryLight],
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppTheme.primaryColor,
+                                    AppTheme.primaryColor.withValues(alpha: 0.7),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
                                 borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                               ),
-                              child: const Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '🇨🇩 PayPro Market RDC',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '🇨🇩 Bienvenue !',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              'Découvrez des produits locaux de qualité',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                height: 1.3,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              'Livraison rapide. Paiement sécurisé.',
+                                              style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(alpha: 0.2),
+                                          borderRadius: BorderRadius.circular(50),
+                                        ),
+                                        child: const Icon(
+                                          Icons.shopping_bag,
+                                          size: 32,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    'Achetez local, soutenez nos vendeurs !',
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 14,
-                                    ),
-                                  ),
+                                  const SizedBox(height: 12),
+                                  // TODO: Ajouter bouton CTA si désiré
                                 ],
                               ),
                             ),
                           ),
 
-                          // Titre section
+                          // 📦 Titre + section produits populaires
                           const SliverToBoxAdapter(
                             child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              child: Text(
-                                'Produits récents',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              padding: EdgeInsets.fromLTRB(16, 12, 16, 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Produits populaires',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF212121),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Voir tout →',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppTheme.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

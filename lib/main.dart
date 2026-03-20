@@ -21,37 +21,30 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Firebase
-  await Firebase.initializeApp();
-  
-  // Set background message handler
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  
-  // Setup push notifications
-  _setupPushNotifications();
+  // Initialize Firebase (optionnel pour notifications)
+  // Désactivé par défaut pour économiser la batterie en RDC
+  // Décommenter si nécessaire pour production
+  // await Firebase.initializeApp();
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // _setupPushNotifications();
   
   runApp(const PayProMarketApp());
 }
 
 void _setupPushNotifications() {
+  // À activer seulement si Firebase est initialisé
   // Handle messages while app is in foreground
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('📩 Message reçu au premier plan:');
     print('Titre: ${message.notification?.title}');
     print('Corps: ${message.notification?.body}');
     print('Données: ${message.data}');
-    
-    // You can show a local notification or update the UI here
-    // For now, just print for debugging
   });
   
   // Handle notification taps
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     print('📱 Notification ouverte:');
     print('Données: ${message.data}');
-    
-    // Navigate to relevant screen based on message data
-    // Example: if (message.data['type'] == 'order') { ... }
   });
   
   // Request permission (iOS only, Android is automatic)

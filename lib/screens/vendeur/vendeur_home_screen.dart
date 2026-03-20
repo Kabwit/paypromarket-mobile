@@ -115,37 +115,148 @@ class _DashboardTabState extends State<_DashboardTab> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Carte de bienvenue
+                    // 🎨 Header de bienvenue amélioré (Shopify-like)
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [AppTheme.primaryColor, AppTheme.primaryLight],
+                        gradient: LinearGradient(
+                          colors: [
+                            AppTheme.accentColor,
+                            AppTheme.accentColor.withValues(alpha: 0.8),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppTheme.accentColor.withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const Text(
+                            '🏪 Votre Boutique',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _dashboard?['vendeur']?['nom_boutique'] ?? 'PayPro Market',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
                           Row(
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      '👋 Bienvenue !',
-                                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                              if (_dashboard?['vendeur']?['verifie'] == true)
+                                ...[
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      _dashboard?['vendeur']?['nom_boutique'] ?? 'Votre boutique',
-                                      style: const TextStyle(color: Colors.white70, fontSize: 14),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green.shade400,
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                  ],
+                                    child: const Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.verified,
+                                            size: 16, color: Colors.white),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          'Vérifié',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                ]
+                              else
+                                ...[
+                                  GestureDetector(
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const VerificationScreen(),
+                                      ),
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber.shade400,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.warning_amber,
+                                              size: 16, color: Colors.white),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'À vérifier',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
+                              if (_dashboard?['vendeur']?['premium'] == true)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.amber,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(Icons.workspace_premium,
+                                          size: 16, color: Colors.white),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        _dashboard?['vendeur']?['plan'] ??
+                                            'Premium',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
                           const SizedBox(height: 10),
@@ -174,96 +285,145 @@ class _DashboardTabState extends State<_DashboardTab> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Statistiques en grille
+                    // 📊 KPI Cards (Shopify-style)
+                    const SizedBox(height: 20),
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: 2,
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
-                      childAspectRatio: 1.4,
+                      childAspectRatio: 1.2,
                       children: [
-                        _statCard(
-                          'Produits',
-                          '${_dashboard?['total_produits'] ?? _dashboard?['totalProduits'] ?? 0}',
-                          Icons.inventory,
-                          Colors.blue,
+                        _kpiCard(
+                          title: 'Revenus',
+                          value:
+                              '${_dashboard?['chiffre_affaires'] ?? _dashboard?['chiffreAffaires'] ?? 0} FC',
+                          icon: Icons.trending_up,
+                          color: Colors.green,
+                          subtitle: 'Ce mois',
                         ),
-                        _statCard(
-                          'Commandes',
-                          '${_dashboard?['total_commandes'] ?? _dashboard?['totalCommandes'] ?? 0}',
-                          Icons.receipt_long,
-                          Colors.orange,
+                        _kpiCard(
+                          title: 'Commandes',
+                          value:
+                              '${_dashboard?['total_commandes'] ?? _dashboard?['totalCommandes'] ?? 0}',
+                          icon: Icons.receipt_long,
+                          color: Colors.blue,
+                          subtitle: 'Total',
                         ),
-                        _statCard(
-                          'Revenus',
-                          '${_dashboard?['chiffre_affaires'] ?? _dashboard?['chiffreAffaires'] ?? 0} FC',
-                          Icons.monetization_on,
-                          AppTheme.successColor,
+                        _kpiCard(
+                          title: 'Produits',
+                          value:
+                              '${_dashboard?['total_produits'] ?? _dashboard?['totalProduits'] ?? 0}',
+                          icon: Icons.inventory,
+                          color: Colors.orange,
+                          subtitle: 'En ligne',
                         ),
-                        _statCard(
-                          'En attente',
-                          '${_dashboard?['commandes_en_attente'] ?? _dashboard?['commandesEnAttente'] ?? 0}',
-                          Icons.hourglass_empty,
-                          Colors.red,
+                        _kpiCard(
+                          title: 'Évaluation',
+                          value:
+                              '${double.tryParse(_dashboard!['vendeur']['note_moyenne'].toString())?.toStringAsFixed(1) ?? '0'}/5',
+                          icon: Icons.star,
+                          color: Colors.amber,
+                          subtitle:
+                              '${_dashboard?['vendeur']?['score_fiabilite'] ?? 0}% fiable',
                         ),
                       ],
                     ),
                     const SizedBox(height: 24),
 
-                    // Actions rapides
-                    const Text(
-                      'Actions rapides',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    // ⚡ Actions rapides
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Actions rapides',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF212121),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 12),
-                    _actionTile(
-                      Icons.add_box,
-                      'Ajouter un produit',
-                      'Publier un nouveau produit',
-                      Colors.blue,
-                      () {
-                        final homeState = context.findAncestorStateOfType<_VendeurHomeScreenState>();
-                        homeState?.setState(() => homeState._currentIndex = 1);
-                      },
-                    ),
-                    _actionTile(
-                      Icons.receipt,
-                      'Voir les commandes',
-                      'Gérer les commandes reçues',
-                      Colors.orange,
-                      () {
-                        final homeState = context.findAncestorStateOfType<_VendeurHomeScreenState>();
-                        homeState?.setState(() => homeState._currentIndex = 2);
-                      },
-                    ),
-                    _actionTile(
-                      Icons.star,
-                      'Avis clients',
-                      'Voir et répondre aux avis',
-                      AppTheme.warningColor,
-                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AvisVendeurScreen())),
-                    ),
-                    _actionTile(
-                      Icons.verified_user,
-                      'Vérification',
-                      'Soumettre vos documents',
-                      AppTheme.primaryColor,
-                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const VerificationScreen())),
-                    ),
-                    _actionTile(
-                      Icons.workspace_premium,
-                      'Mon Plan',
-                      'Gérer votre abonnement',
-                      AppTheme.accentColor,
-                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumScreen())),
-                    ),
-                    _actionTile(
-                      Icons.bar_chart,
-                      'Statistiques',
-                      'Graphiques et analyses',
-                      Colors.teal,
-                      () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StatsScreen())),
+                    // Boutons d'action en grille
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: 1,
+                      children: [
+                        _actionButton(
+                          Icons.add_box,
+                          'Ajouter\nProduit',
+                          Colors.blue,
+                          () {
+                            final homeState =
+                                context.findAncestorStateOfType<
+                                    _VendeurHomeScreenState>();
+                            homeState?.setState(() => homeState._currentIndex = 1);
+                          },
+                        ),
+                        _actionButton(
+                          Icons.receipt_long,
+                          'Voir\nCommandes',
+                          Colors.orange,
+                          () {
+                            final homeState =
+                                context.findAncestorStateOfType<
+                                    _VendeurHomeScreenState>();
+                            homeState?.setState(() => homeState._currentIndex = 2);
+                          },
+                        ),
+                        _actionButton(
+                          Icons.star,
+                          'Avis\nClients',
+                          Colors.amber,
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const AvisVendeurScreen(),
+                            ),
+                          ),
+                        ),
+                        _actionButton(
+                          Icons.bar_chart,
+                          'Stats &\nAnalytics',
+                          Colors.teal,
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const StatsScreen(),
+                            ),
+                          ),
+                        ),
+                        _actionButton(
+                          Icons.workspace_premium,
+                          'Mon\nPlan',
+                          Colors.purple,
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PremiumScreen(),
+                            ),
+                          ),
+                        ),
+                        _actionButton(
+                          Icons.person,
+                          'Profil &\nBoutique',
+                          Colors.pink,
+                          () {
+                            final homeState =
+                                context.findAncestorStateOfType<
+                                    _VendeurHomeScreenState>();
+                            homeState?.setState(() => homeState._currentIndex = 3);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -272,30 +432,22 @@ class _DashboardTabState extends State<_DashboardTab> {
     );
   }
 
-  Widget _badge(IconData icon, String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 14, color: Colors.white),
-          const SizedBox(width: 4),
-          Text(label, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
-        ],
-      ),
-    );
-  }
-
-  Widget _statCard(String label, String value, IconData icon, Color color) {
+  Widget _kpiCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+    required String subtitle,
+  }) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: color.withValues(alpha: 0.2),
+          width: 2,
+        ),
         boxShadow: [
           BoxShadow(
             color: color.withValues(alpha: 0.1),
@@ -306,14 +458,38 @@ class _DashboardTabState extends State<_DashboardTab> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(icon, color: color, size: 28),
-          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF757575),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  icon,
+                  size: 18,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
           Text(
             value,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
               color: color,
             ),
@@ -321,27 +497,69 @@ class _DashboardTabState extends State<_DashboardTab> {
             overflow: TextOverflow.ellipsis,
           ),
           Text(
-            label,
-            style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+            subtitle,
+            style: const TextStyle(
+              fontSize: 11,
+              color: Color(0xFFBDBDBD),
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _actionTile(IconData icon, String title, String subtitle, Color color, VoidCallback onTap) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: color.withValues(alpha: 0.1),
-          child: Icon(icon, color: color),
+  Widget _actionButton(
+    IconData icon,
+    String label,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: color.withValues(alpha: 0.3),
+            width: 1.5,
+          ),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Icon(
+                icon,
+                size: 24,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Text(
+                label,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                  color: Color(0xFF212121),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
 }
