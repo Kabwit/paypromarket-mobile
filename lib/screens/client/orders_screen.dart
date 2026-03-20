@@ -43,17 +43,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   Color _statutColor(String? statut) {
-    switch (statut) {
+    final normalized = statut?.toLowerCase().replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('à', 'a') ?? '';
+    
+    switch (normalized) {
       case 'en_attente':
         return Colors.orange;
       case 'confirmee':
         return Colors.blue;
-      case 'en_preparation':
+      case 'preparation':
         return Colors.purple;
-      case 'prete':
-        return Colors.teal;
-      case 'en_livraison':
+      case 'en_cours':
         return Colors.indigo;
+      case 'pret_pour_livraison':
+        return Colors.teal;
       case 'livree':
         return AppTheme.successColor;
       case 'annulee':
@@ -64,17 +66,19 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   IconData _statutIcon(String? statut) {
-    switch (statut) {
+    final normalized = statut?.toLowerCase().replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('à', 'a') ?? '';
+    
+    switch (normalized) {
       case 'en_attente':
         return Icons.hourglass_empty;
       case 'confirmee':
         return Icons.check_circle_outline;
-      case 'en_preparation':
+      case 'preparation':
         return Icons.kitchen;
-      case 'prete':
-        return Icons.check_circle;
-      case 'en_livraison':
+      case 'en_cours':
         return Icons.local_shipping;
+      case 'pret_pour_livraison':
+        return Icons.check_circle;
       case 'livree':
         return Icons.done_all;
       case 'annulee':
@@ -238,7 +242,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 _infoRow('Téléphone', commande.telephoneContact!),
 
               // Bouton suivi de livraison
-              if (commande.statut != 'annulee' && commande.statut != 'annulée') ...[
+              if (commande.statut != 'annulee') ...[
                 const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
@@ -277,7 +281,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ],
 
               // Actions pour commande livrée
-              if (commande.statut == 'livree' || commande.statut == 'livrée') ...[
+              if (commande.statut == 'livree') ...[
                 const SizedBox(height: 20),
                 const Divider(),
                 const SizedBox(height: 8),

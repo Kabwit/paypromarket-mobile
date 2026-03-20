@@ -71,17 +71,19 @@ class Commande {
   }
 
   String get statutLabel {
-    switch (statut) {
+    final normalized = statut?.toLowerCase().replaceAll('é', 'e').replaceAll('ê', 'e').replaceAll('à', 'a') ?? '';
+    
+    switch (normalized) {
       case 'en_attente':
         return 'En attente';
       case 'confirmee':
         return 'Confirmée';
-      case 'en_preparation':
+      case 'preparation':
         return 'En préparation';
-      case 'prete':
-        return 'Prête';
-      case 'en_livraison':
-        return 'En livraison';
+      case 'en_cours':
+        return 'En cours';
+      case 'pret_pour_livraison':
+        return 'Prêt pour livraison';
       case 'livree':
         return 'Livrée';
       case 'annulee':

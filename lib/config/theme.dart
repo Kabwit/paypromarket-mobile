@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Couleurs PayPro Market RDC — Bleu-gris sobre
-  static const Color primaryColor = Color(0xFF37474F); // Bleu-gris foncé
-  static const Color primaryLight = Color(0xFF546E7A); // Bleu-gris clair
-  static const Color primaryDark = Color(0xFF263238); // Bleu-gris très foncé
-  static const Color accentColor = Color(0xFFFF9800); // Orange
-  static const Color backgroundColor = Color(0xFFF5F5F5);
+  // Couleurs PayPro Market RDC — Vert professionnel + Blanc
+  static const Color primaryColor = Color(0xFF1B5E20); // Vert foncé
+  static const Color primaryLight = Color(0xFF2E7D32); // Vert clair
+  static const Color primaryDark = Color(0xFF0D3A1A); // Vert très foncé
+  static const Color accentColor = Color(0xFF1B5E20); // Vert accent
+  static const Color backgroundColor = Color(0xFFF8FAF8); // Blanc-cassé professionnel
   static const Color surfaceColor = Colors.white;
   static const Color errorColor = Color(0xFFD32F2F);
   static const Color successColor = Color(0xFF388E3C);
@@ -15,7 +15,7 @@ class AppTheme {
   static const Color textPrimary = Color(0xFF212121);
   static const Color textSecondary = Color(0xFF757575);
   static const Color dividerColor = Color(0xFFE0E0E0);
-  static const Color verifiedBadge = Color(0xFF37474F);
+  static const Color verifiedBadge = Color(0xFF1B5E20);
   static const Color premiumGold = Color(0xFFFFD700);
 
   static ThemeData get lightTheme {
@@ -30,10 +30,16 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: backgroundColor,
       appBarTheme: const AppBarTheme(
-        backgroundColor: primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: primaryColor,
+        elevation: 1,
         centerTitle: true,
+        titleTextStyle: TextStyle(
+          color: primaryColor,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        iconTheme: IconThemeData(color: primaryColor),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(

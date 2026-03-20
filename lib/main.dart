@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'config/theme.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/auth_provider.dart';
@@ -10,8 +12,50 @@ import 'screens/auth/welcome_screen.dart';
 import 'screens/client/client_home_screen.dart';
 import 'screens/vendeur/vendeur_home_screen.dart';
 
-void main() {
+// Gestionnaire de messages en arrière-plan
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Handle messages when app is in background/terminated
+  print('Message reçu en arrière-plan: ${message.messageId}');
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
+  await Firebase.initializeApp();
+  
+  // Set background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  
+  // Setup push notifications
+  _setupPushNotifications();
+  
   runApp(const PayProMarketApp());
+}
+
+void _setupPushNotifications() {
+  // Handle messages while app is in foreground
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('📩 Message reçu au premier plan:');
+    print('Titre: ${message.notification?.title}');
+    print('Corps: ${message.notification?.body}');
+    print('Données: ${message.data}');
+    
+    // You can show a local notification or update the UI here
+    // For now, just print for debugging
+  });
+  
+  // Handle notification taps
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('📱 Notification ouverte:');
+    print('Données: ${message.data}');
+    
+    // Navigate to relevant screen based on message data
+    // Example: if (message.data['type'] == 'order') { ... }
+  });
+  
+  // Request permission (iOS only, Android is automatic)
+  FirebaseMessaging.instance.requestPermission();
 }
 
 class PayProMarketApp extends StatelessWidget {
