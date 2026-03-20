@@ -108,9 +108,9 @@ class _AvisVendeurScreenState extends State<AvisVendeurScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.rate_review_outlined, size: 64, color: Colors.grey[400]),
+                      const Icon(Icons.rate_review_outlined, size: 64, color: Color(0xFF2E7D32)),
                       const SizedBox(height: 16),
-                      Text('Aucun avis pour l\'instant', style: TextStyle(color: Colors.grey[600], fontSize: 16)),
+                      const Text('Aucun avis pour l\'instant', style: TextStyle(color: Color(0xFF757575), fontSize: 16)),
                     ],
                   ),
                 )
@@ -175,7 +175,7 @@ class _AvisVendeurScreenState extends State<AvisVendeurScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[100],
+                                    color: const Color(0xFFF1F8F6),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Column(

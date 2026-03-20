@@ -255,7 +255,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       child: Container(
         height: 120,
         decoration: BoxDecoration(
-          color: Colors.grey[100],
+          color: const Color(0xFFF1F8F6),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: AppTheme.dividerColor),
         ),

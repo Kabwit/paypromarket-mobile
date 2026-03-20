@@ -103,7 +103,7 @@ class _SuiviLivraisonScreenState extends State<SuiviLivraisonScreen> {
           const SizedBox(height: 8),
           Text('Total : $total FC', style: const TextStyle(fontSize: 14)),
           if (date.isNotEmpty)
-            Text('Date : ${_formatDate(date)}', style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+            Text('Date : ${_formatDate(date)}', style: const TextStyle(fontSize: 12, color: Color(0xFF757575))),
         ],
       ),
     );
@@ -180,7 +180,7 @@ class _SuiviLivraisonScreenState extends State<SuiviLivraisonScreen> {
                         child: Icon(
                           step['icon'] as IconData,
                           size: 16,
-                          color: isActive ? Colors.white : Colors.grey[500],
+                          color: isActive ? Colors.white : const Color(0xFF81C784),
                         ),
                       ),
                       if (!isLast)
@@ -204,13 +204,13 @@ class _SuiviLivraisonScreenState extends State<SuiviLivraisonScreen> {
                             style: TextStyle(
                               fontWeight: isCurrent ? FontWeight.bold : FontWeight.w500,
                               fontSize: 14,
-                              color: isActive ? Colors.black : Colors.grey,
+                              color: isActive ? Colors.black : const Color(0xFF81C784),
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             step['desc'] as String,
-                            style: TextStyle(fontSize: 12, color: isActive ? Colors.grey[700] : Colors.grey[400]),
+                            style: TextStyle(fontSize: 12, color: isActive ? const Color(0xFF555555) : const Color(0xFF81C784)),
                           ),
                         ],
                       ),
@@ -318,7 +318,7 @@ class _SuiviLivraisonScreenState extends State<SuiviLivraisonScreen> {
       case 'expédiée': return Colors.deepPurple;
       case 'livrée': return AppTheme.successColor;
       case 'annulée': return Colors.red;
-      default: return Colors.grey;
+      default: return const Color(0xFF81C784);
     }
   }
 

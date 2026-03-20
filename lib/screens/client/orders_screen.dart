@@ -61,7 +61,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       case 'annulee':
         return AppTheme.errorColor;
       default:
-        return Colors.grey;
+        return const Color(0xFF81C784);
     }
   }
 
@@ -221,7 +221,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: const Color(0xFFE8F5E9),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),

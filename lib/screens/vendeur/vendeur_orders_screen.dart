@@ -56,7 +56,7 @@ class _VendeurOrdersScreenState extends State<VendeurOrdersScreen> {
       case 'en_livraison': return Colors.indigo;
       case 'livree': return AppTheme.successColor;
       case 'annulee': return AppTheme.errorColor;
-      default: return Colors.grey;
+      default: return const Color(0xFF81C784);
     }
   }
 
@@ -229,7 +229,7 @@ class _VendeurOrdersScreenState extends State<VendeurOrdersScreen> {
               Center(
                 child: Container(
                   width: 40, height: 4,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(2)),
+                  decoration: BoxDecoration(color: const Color(0xFFE8F5E9), borderRadius: BorderRadius.circular(2)),
                 ),
               ),
               const SizedBox(height: 16),

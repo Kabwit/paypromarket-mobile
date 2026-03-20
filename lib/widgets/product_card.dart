@@ -38,19 +38,19 @@ class ProductCard extends StatelessWidget {
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
                       placeholder: (ctx, url) => Container(
-                        color: Colors.grey[200],
+                        color: const Color(0xFFE8F5E9),
                         child: const Center(
                           child: CircularProgressIndicator(strokeWidth: 2),
                         ),
                       ),
                       errorWidget: (ctx, url, err) => Container(
-                        color: Colors.grey[200],
-                        child: const Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
+                        color: const Color(0xFFE8F5E9),
+                        child: const Icon(Icons.image_not_supported, size: 40, color: Color(0xFF1B5E20)),
                       ),
                     )
                   : Container(
-                      color: Colors.grey[200],
-                      child: const Icon(Icons.shopping_bag, size: 40, color: Colors.grey),
+                      color: const Color(0xFFE8F5E9),
+                      child: const Icon(Icons.shopping_bag, size: 40, color: Color(0xFF1B5E20)),
                     ),
             ),
 

@@ -101,10 +101,10 @@ class _VendeurProductsScreenState extends State<VendeurProductsScreen> {
                             width: 60,
                             height: 60,
                             decoration: BoxDecoration(
-                              color: Colors.grey[200],
+                              color: const Color(0xFFE8F5E9),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.shopping_bag, color: Colors.grey),
+                            child: const Icon(Icons.shopping_bag, color: Color(0xFF1B5E20)),
                           ),
                           title: Text(
                             produit.nom,

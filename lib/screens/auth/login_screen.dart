@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Connectez-vous pour continuer',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[600],
+                    color: const Color(0xFF757575),
                   ),
                   textAlign: TextAlign.center,
                 ),

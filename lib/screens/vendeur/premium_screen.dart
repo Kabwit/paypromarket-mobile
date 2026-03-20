@@ -17,7 +17,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
   bool _isProcessing = false;
 
   final _plans = {
-    'gratuit': {'limite': 20, 'prix': 0, 'icon': Icons.storefront, 'color': Colors.grey},
+    'gratuit': {'limite': 20, 'prix': 0, 'icon': Icons.storefront, 'color': const Color(0xFF81C784)},
     'premium': {'limite': 100, 'prix': 10, 'icon': Icons.workspace_premium, 'color': AppTheme.accentColor},
     'business': {'limite': 500, 'prix': 25, 'icon': Icons.diamond, 'color': AppTheme.primaryColor},
   };

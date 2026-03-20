@@ -124,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   isVendeur
                       ? 'Remplissez les informations de votre boutique'
                       : 'Remplissez vos informations personnelles',
-                  style: TextStyle(color: Colors.grey[600]),
+                  style: const TextStyle(color: Color(0xFF757575)),
                 ),
                 const SizedBox(height: 24),
 

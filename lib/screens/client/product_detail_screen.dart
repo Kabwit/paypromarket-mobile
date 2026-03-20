@@ -43,18 +43,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         imageUrl: ApiConfig.uploadUrl(produit.photos[i]),
                         fit: BoxFit.cover,
                         placeholder: (ctx, url) => Container(
-                          color: Colors.grey[200],
+                          color: const Color(0xFFE8F5E9),
                           child: const Center(child: CircularProgressIndicator()),
                         ),
                         errorWidget: (ctx, url, err) => Container(
-                          color: Colors.grey[200],
+                          color: const Color(0xFFE8F5E9),
                           child: const Icon(Icons.image_not_supported, size: 60),
                         ),
                       ),
                     )
                   : Container(
                       color: Colors.grey[200],
-                      child: const Icon(Icons.shopping_bag, size: 80, color: Colors.grey),
+                      child: const Icon(Icons.shopping_bag, size: 80, color: Color(0xFF1B5E20)),
                     ),
             ),
           ),
@@ -79,7 +79,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             shape: BoxShape.circle,
                             color: i == _currentImageIndex
                                 ? AppTheme.primaryColor
-                                : Colors.grey[300],
+                                : const Color(0xFFC8E6C9),
                           ),
                         ),
                       ),
@@ -132,7 +132,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           '${produit.prix.toStringAsFixed(0)} FC',
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.grey,
+                            color: const Color(0xFF81C784),
                             decoration: TextDecoration.lineThrough,
                           ),
                         ),

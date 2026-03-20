@@ -148,11 +148,11 @@ class _CartScreenState extends State<CartScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shopping_cart_outlined, size: 80, color: Colors.grey),
+                    const Icon(Icons.shopping_cart_outlined, size: 80, color: Color(0xFF1B5E20)),
                     SizedBox(height: 16),
                     Text(
                       'Votre panier est vide',
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                      style: const TextStyle(fontSize: 18, color: Color(0xFF1B5E20)),
                     ),
                   ],
                 ),
@@ -174,10 +174,10 @@ class _CartScreenState extends State<CartScreen> {
                                   width: 60,
                                   height: 60,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[200],
+                                    color: const Color(0xFFE8F5E9),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Icon(Icons.shopping_bag, color: Colors.grey),
+                                  child: const Icon(Icons.shopping_bag, color: Color(0xFF1B5E20)),
                                 ),
                                 const SizedBox(width: 12),
                                 // Infos
